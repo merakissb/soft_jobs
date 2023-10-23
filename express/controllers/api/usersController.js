@@ -2,21 +2,17 @@
 
 import { pool } from '../../db/pool.js';
 
-// email, password, rol y lenguage son los input que se reciben del formulario
+// email, password se reciben del formulario
 export const create = async (req, res) => {
-    const { email, password, rol, language } = req.body;
-    const client = await pool.connect();
+    const { email, password } = req.body;
+
     try {
-        await client.query('BEGIN');
-        const queryText = 'INSERT INTO users (email, password, rol, language) VALUES ($1, $2, $3, $4) RETURNING *';
-        const queryValues = [email, password, rol, language];
-        const { rows: [user] } = await client.query(queryText, queryValues);
-        await client.query('COMMIT');
-        res.status(201).json(user);
-    } catch (e) {
-        await client.query('ROLLBACK');
-        res.status(500).json({ error: e });
-    } finally {
-        client.release();
+        const response = await pool.query(
+        'INSERT INTO usuarios (email, password) VALUES ($1, $2) RETURNING *',
+        [email, password]
+        );
+        res.json(response.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    }
+    };

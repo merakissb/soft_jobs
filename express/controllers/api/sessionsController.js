@@ -6,7 +6,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await pool.query(
-      'SELECT * FROM users WHERE email = $1 AND password = $2',
+      'SELECT * FROM usuarios WHERE email = $1 AND password = $2',
       [email, password]
     );
     if (user.rows.length === 0) {

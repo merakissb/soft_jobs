@@ -6,7 +6,7 @@ import { pool } from './db/pool.js';
 import router from './config/routes.js';
 
 const app = express();
-const port = 3001;
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
